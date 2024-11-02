@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "bookstore-be145",
+  "private_key_id": "9db13dbae8efa63cb4c08971ca41ec75850b1737",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDAllZOj3NStHVc\nE6oOo9ZwsyENbVIO4CRThPnAOFuiMkUXwwVezfze2SxStQuqv7VkpmwUZ3n0OSco\nSBg0yv+kTOW88DwfKuZBAKQIH0PXE19u/7MWqNHmcAaME8uF1G7R1tFKyUfQ2qFP\nq6TV+LrBzDFMotj7dhxFtvIA4n/X/O4N1+X2GH6bSIfrIi4LtHw3rXK2Jwxu8Ppk\n1kAtgd2FCJhYxlNQxrCHVWvRIAsAghdc3XA6u0FxufsaTDQU/SJ8aqGZtu0YDG5G\nF+MHsi9oV98jkLxuWRLLsSSWIkbWXFiAice++73DVwX6gQaGYvWtmARor7Y81J02\nf3pdZjEpAgMBAAECggEAOskI8jT2Yi3kTuVPuOVIzSDYe3U9oX3IiNfjtkldqx5G\nGdE1H/GneMx4q4xI0edvspfcEMRfJO2XJsQO43p9WwT/8VKxP2BEZV4RM8t7VTi8\nHjEd1NJWM81JKlPWgXTNGO9F9lqHOdiqeZuuloO0Wfh+qeJhcixkx+DmcN+yX1Z0\n5/1lH1+g/gH29KaJyBlebsmq5faoKZTo+270V2QnMrFZ3qDfLs7MeX3xCNMyoCie\nwfZl6QKhlGuMR1UT9fIx63xNczyZbpTSNFFJjnuEvvscnuxPX+mE7CMATPLk3Gvk\n8HpSVzS9pLH29tc9CZSNRR6GNf48kKbhVrx0zreT8wKBgQDtOepy0cKckTFFx/6J\nqzvxszFG7oky4vshuSViu3u9wiVzIQpVyWVjwzN1QLC4dHguHmCx+YWjdOLrgwqk\nPBzLwLq9WDgXyO1nGj84VfOvMW8QIzj8aqkjDCNKrepqwluOcImEwKM0ri4KhFYE\nKXcwDLnLeAqvG9hlvyNUqaADAwKBgQDP1A7ckvASH3MmBuPA2uYkQPQO9yGwxaR2\nVu+1Sj6AKflPJ3WvdSuF0yUPSOpIwlIqK1JUKU9vJkgsD0AJCRzymy32mZpdNK3a\nX4i2RA8eqXvdi3lVEObRr5JMi1p40DAYfCIjU6M6UTPqVcuLVTdKKn2tPXJ9xBd0\nmLsnDNStYwKBgQDNMCEXu1NndTZ3Myt5DIFG6EWhIsXNHAM4AhrSMXQwh/M4h8WW\nuiJWjgq+SnwQr70btu7QQhFTdtCoAKp9r/kAS+25xMqP2B1v5oX0RnQGfu2fubea\nrO8q/16vQ4rVWNM0eyaXisAf2uC7/AcihnMvPnKeCXDEUYN1TkRTAH0E3QKBgC9z\nOC1uMvfATHcLLabTk6YFWnOsQvnsNh96u+IFYH28l5pV5Q25T8WPLq/tsugHzeCo\n4XQrtmInOGUu2iz18rEFcxoReef75hGsrDcJFPaoNYqglIQyhrCrSFjHnFFnHwQI\nG3c7WlIvRg4jpoRaYXRCfU03cVN7mOtbD6fbyxcHAoGASVq30qNf0pxaUKQvGorb\nfOlyz6uOwDumwVa5cRLtv73FW3V/0D44T2CuB6+DS4DIQHzeBTgZhyb3a/J+ZMRB\naE7bOaXmhqxL49sGsQR0XLM2gIYF5/vEwtWOFeknuJ20D5xmkSMxXYlCYeW2Yhp5\ndUPpbCxFSuToh2DfU/2SzJ8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-xilwq@bookstore-be145.iam.gserviceaccount.com",
+  "client_id": "115469152918889052613",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xilwq%40bookstore-be145.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

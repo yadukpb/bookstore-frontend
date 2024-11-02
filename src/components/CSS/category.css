@@ -1,0 +1,160 @@
+#book_category{
+    display: flex;
+    column-gap: 28px;
+    font-size: 1.1em;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    width: 67%;
+    margin-top: 25px;
+}
+
+@media (max-width: 768px) {
+    #book_category {
+        width: 100%;
+        justify-content: center;
+    }
+    .books_category {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+.books_category{
+    align-items: center;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.07);
+    cursor: pointer;
+    color: white;
+    display: flex;
+    padding: 6px 20px;
+    text-decoration: none;
+    transition: all 0.25s ease-in-out;
+}
+
+.books_category:hover{
+    transform: scale(1.04);
+    box-shadow: 0 0 8px turquoise;
+}
+
+.books_category img{
+    width: 34px;
+    margin-right: 9px;
+}
+
+#book_category .active{
+    box-shadow: 0 0 8px cyan;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.04);
+}
+
+.category_select{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    column-gap: 80px;
+}
+
+.category_select img{
+    width: 290px;
+}
+
+.category_select p{
+    font-size: 32px;
+    font-weight: bold;
+}
+
+#bookByCategoryHead{
+    align-items: center;
+    column-gap: 10px;
+    display: flex;
+    font-weight: 500;
+    font-size: 1.65em;
+    letter-spacing: 1px;
+    margin-left: 14px;
+}
+
+#bookByCategoryHead img{
+    width: 38px;
+}
+
+#bookByCategory{
+    display: flex;
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+    #bookByCategory {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.bookOverview{
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 200px;
+    padding: 15px 5px;
+    margin-left: 45px;
+    text-decoration: none;
+    transition: all 0.25s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .bookOverview {
+        width: 90%;
+        margin-left: 0;
+        margin-bottom: 20px;
+    }
+}
+
+.searchBar {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.bookOverview:hover{
+    transform: scale(1.02);
+    box-shadow: 0 0 6px #5e509b;
+}
+
+.bookOverview img{
+    border-radius: 8px;
+    box-shadow: 0 0 20px #252232;
+    width: 80%;
+    height: 210px;
+    object-fit: contain;
+    margin-bottom: 12px;
+}
+
+.bookOverview h2{
+    color: white;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.bookOverview button{
+    border: none;
+    border-radius: 5px;
+    background-color: #F47960;
+    color: white;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1px;
+    width: 85%;
+    padding: 6px 0;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .books_category img {
+        display: block;
+        margin: 0 auto;
+    }
+}
