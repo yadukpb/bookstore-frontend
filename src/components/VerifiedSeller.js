@@ -11,6 +11,19 @@ import publication from "./images/Seller/publication.png";
 import menuVertical from "./images/Seller/menuVertical.png";
 import preview from "./images/Seller/preview.png";
 
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+
+const handleImageChange = (e, setImage) => {
+  const file = e.target.files[0];
+  if (file) {
+    if (file.size > MAX_IMAGE_SIZE) {
+      alert('Image size should be less than 5MB');
+      return;
+    }
+    setImage(file);
+  }
+};
+
 function VerifiedSeller({ verified, userId, user }) {
   const [bookName, setbookName] = useState("");
   const [bookDesc, setbookDesc] = useState("");
@@ -23,6 +36,7 @@ function VerifiedSeller({ verified, userId, user }) {
   const [bookEdition, setbookEdition] = useState("");
   const [bookPublisher, setbookPublisher] = useState("");
   const [bookCategory, setbookCategory] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleUpload(e) {
     e.preventDefault();
@@ -34,7 +48,29 @@ function VerifiedSeller({ verified, userId, user }) {
 
     if (!bookFront || !bookIndex || !bookMiddle || !bookBack) {
       alert("Please upload the images of book");
-    } else {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const formData = new FormData();
+      formData.append('bookFront', bookFront);
+      formData.append('bookBack', bookBack);
+      formData.append('bookIndex', bookIndex);
+      formData.append('bookMiddle', bookMiddle);
+
+      const uploadResponse = await fetch('http://localhost:5007/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload images');
+      }
+
+      const { urls } = await uploadResponse.json();
+
       const book = {
         name: bookName,
         description: bookDesc,
@@ -44,31 +80,43 @@ function VerifiedSeller({ verified, userId, user }) {
         publisher: bookPublisher,
         category: bookCategory,
         sellerId: userId,
-        bookFront,
-        bookBack,
-        bookIndex,
-        bookMiddle,
+        bookFront: urls.bookFront,
+        bookBack: urls.bookBack,
+        bookIndex: urls.bookIndex,
+        bookMiddle: urls.bookMiddle
       };
 
-      await fetch("http://localhost:5007/api/book", {
+      const response = await fetch("http://localhost:5007/api/book", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify(book),
+        body: JSON.stringify(book)
       });
 
-      // setbookFront("");
-      // setbookBack("");
-      // setbookIndex("");
-      // setbookMiddle("");
-      // setbookName("");
-      // setbookDesc("");
-      // setbookPrice("");
-      // setbookMRP("");
-      // setbookEdition("");
-      // setbookPublisher("");
-      // setbookCategory("");
+      if (!response.ok) {
+        throw new Error('Failed to create book listing');
+      }
+
+      alert('Book listed successfully!');
+      
+      // Reset form
+      setbookFront("");
+      setbookBack("");
+      setbookIndex("");
+      setbookMiddle("");
+      setbookName("");
+      setbookDesc("");
+      setbookPrice("");
+      setbookMRP("");
+      setbookEdition("");
+      setbookPublisher("");
+      setbookCategory("");
+    } catch (error) {
+      alert('Error: ' + error.message);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -85,7 +133,7 @@ function VerifiedSeller({ verified, userId, user }) {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setbookFront(e.target.files[0])}
+                onChange={(e) => handleImageChange(e, setbookFront)}
               />
               <img
                 src={bookFront ? URL.createObjectURL(bookFront) : addImage}
@@ -97,7 +145,7 @@ function VerifiedSeller({ verified, userId, user }) {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setbookIndex(e.target.files[0])}
+                onChange={(e) => handleImageChange(e, setbookIndex)}
               />
               <img
                 src={bookIndex ? URL.createObjectURL(bookIndex) : addImage}
@@ -111,7 +159,7 @@ function VerifiedSeller({ verified, userId, user }) {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setbookMiddle(e.target.files[0])}
+                onChange={(e) => handleImageChange(e, setbookMiddle)}
               />
               <img
                 src={bookMiddle ? URL.createObjectURL(bookMiddle) : addImage}
@@ -123,7 +171,7 @@ function VerifiedSeller({ verified, userId, user }) {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => setbookBack(e.target.files[0])}
+                onChange={(e) => handleImageChange(e, setbookBack)}
               />
               <img
                 src={bookBack ? URL.createObjectURL(bookBack) : addImage}
@@ -264,8 +312,8 @@ function VerifiedSeller({ verified, userId, user }) {
               </select>
             </div>
             <div className="detailButtons">
-              <button type="submit" disabled={!user}>
-                Sell Book
+              <button type="submit" disabled={!user || isLoading}>
+                {isLoading ? 'Uploading...' : 'Sell Book'}
               </button>
             </div>
           </form>

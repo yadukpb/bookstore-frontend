@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 
 import TopNav from "./components/TopNav";
@@ -16,13 +16,9 @@ import Privacy from "./components/Privacy";
 import Safety from "./components/Safety";
 import AdminBooks from './components/AdminBooks';
 import Search from "./components/Search";
-import Chat from "./components/Chat";
+import Auth from './components/Auth';
 
-import { auth, db } from "./firebase";
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from 'firebase/auth';
-import { collection, query, orderBy, onSnapshot, doc, getDoc, setDoc } from 'firebase/firestore';
-
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -33,54 +29,27 @@ function App() {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    const booksRef = collection(db, "books");
-    const q = query(booksRef, orderBy("bookID"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setBooks(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    });
+    fetch('your-api-endpoint/books')
+      .then(res => res.json())
+      .then(data => setBooks(data))
+      .catch(err => console.error('Error fetching books:', err));
 
-
-    const authUnsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uId = user.email.split("@")[0];
-        setUserId(uId);
-        setUserPic(user.photoURL);
-
-        // fetching user details if exists else will add to the database
-        const userDocRef = doc(db, "users", uId);
-        getDoc(userDocRef).then((docSnap) => {
-          if (!docSnap.exists()) {
-            const newUser = {
-              name: user.displayName,
-              email: user.email,
-              image: user.photoURL,
-              wishlist: [],
-              verified: false,
-            };
-            setDoc(userDocRef, newUser);
-            setUserData(newUser);
-          } else {
-            const userData = docSnap.data();
-            setUserData(userData);
-            setWishlist(userData.wishlist || []);
-            setVerified(userData.verified || false);
-          }
-        });
-      } else {
-        setUserId("");
-        setUserPic("");
-        setWishlist([]);
-        setVerified(false);
-        setUserData({});
-      }
-    });
-
-    return () => {
-      unsubscribe();
-      authUnsubscribe();
-    };
+    const token = localStorage.getItem('accessToken');
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    if (token && user) {
+      setUserId(user.id);
+      setUserData(user);
+    }
   }, []);
-  console.log("App render", { books, userId, userPic, wishlist, verified, userData });
+
+  const ProtectedRoute = ({ children }) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      return <Navigate to="/auth" replace />;
+    }
+    return children;
+  };
 
   return (
     <>
@@ -91,58 +60,40 @@ function App() {
           <Routes>
             <Route path="/" element={<Home books={books} />} />
             <Route path="category" element={<Category books={books} />} />
-            <Route
-              path="category/:catId"
-              element={<Category books={books} />}
-            />
-            <Route
-              path="book/:bookId"
-              element={
-                <Book
-                  books={books}
-                  wishlist={wishlist}
-                  setWishlist={setWishlist}
-                  user={userId}
-                />
-              }
-            />
-            <Route
-              path="seller"
-              element={
-                <Seller
-                  setVerified={setVerified}
-                  verified={verified}
-                  user={userId}
-                />
-              }
-            />
-            <Route
-              path="seller/verified"
-              element={
-                <VerifiedSeller
-                  verified={verified}
-                  userId={userId}
-                  user={userData}
-                />
-              }
-            />
-            <Route path="recommend" element={<Recommend />} />
+            <Route path="category/:catId" element={<Category books={books} />} />
+            <Route path="book/:bookId" element={<Book books={books} wishlist={wishlist} setWishlist={setWishlist} user={userId} />} />
             <Route path="about" element={<About />} />
             <Route path="about/terms&condition" element={<Terms />} />
             <Route path="about/privacy-policy" element={<Privacy />} />
             <Route path="about/safety-remarks" element={<Safety />} />
-            <Route path="/admin/books" element={<AdminBooks />} />
-            <Route
-              path="user/:userId"
-              element={
+            <Route path="/auth" element={<Auth />} />
+            <Route path="search/:option/:search" element={<Search books={books} />} />
+
+            <Route path="seller" element={
+              <ProtectedRoute>
+                <Seller setVerified={setVerified} verified={verified} user={userId} />
+              </ProtectedRoute>
+            } />
+            <Route path="seller/verified" element={
+              <ProtectedRoute>
+                <VerifiedSeller verified={verified} userId={userId} user={userData} />
+              </ProtectedRoute>
+            } />
+            <Route path="recommend" element={
+              <ProtectedRoute>
+                <Recommend />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/books" element={
+              <ProtectedRoute>
+                <AdminBooks />
+              </ProtectedRoute>
+            } />
+            <Route path="user/:userId" element={
+              <ProtectedRoute>
                 <UserInfo books={books} currUser={userId} userData={userData} />
-              }
-            />
-            <Route
-              path="search/:option/:search"
-              element={<Search books={books} />}
-            />
-            <Route path="chat" element={<Chat />} />
+              </ProtectedRoute>
+            } />
           </Routes>
         </div>
       </div>

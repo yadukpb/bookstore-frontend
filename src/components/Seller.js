@@ -17,7 +17,30 @@ function Seller({ verified, setVerified, user }) {
       const locationInput = sellerDetails[1];
 
       try {
-        const userRef = doc(db, "users", user); // Correct usage of doc
+        const accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
+          throw new Error('No access token found');
+        }
+
+        const response = await fetch('http://localhost:5007/api/users/become-seller', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({
+            userId: user,
+            telegram: telegramInput.value,
+            location: locationInput.value
+          })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to become seller');
+        }
+
+        const userRef = doc(db, "users", user);
         await updateDoc(userRef, {
           verified: true,
           telegram: telegramInput.value,
@@ -30,7 +53,11 @@ function Seller({ verified, setVerified, user }) {
         locationInput.value = "";
       } catch (error) {
         console.error("Error updating seller status:", error);
-        alert("Error becoming seller. Please try again.");
+        if (error.message.includes('token')) {
+          alert("Please login again to continue");
+        } else {
+          alert("Error becoming seller. Please try again.");
+        }
       }
     } else {
       alert("Please Sign In to proceed");

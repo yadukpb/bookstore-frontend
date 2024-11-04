@@ -96,7 +96,7 @@ function SideNav({ userId, userPic }) {
           src={googleLogo}
           alt="google logo"
           title="Login or Signup using Google"
-          onClick={signInWithGoogle}
+          onClick={ navigate('/auth')}
         />
       )}
       {/* {userId && (
